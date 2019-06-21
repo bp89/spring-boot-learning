@@ -1,3 +1,7 @@
 .idea/
-springpractice.iml
+*.iml
 target/
+.classpath
+.project
+*.class
+.settings/
