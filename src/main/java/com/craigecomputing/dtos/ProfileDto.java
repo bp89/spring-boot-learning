@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 @Builder
-@JsonRootName(value = "profile")
 public class ProfileDto {
     private String name;
 }
