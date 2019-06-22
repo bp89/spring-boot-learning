@@ -1,23 +1,44 @@
-Spring-boot Tutorial
+Securing Spring-boot application
 ---
 
-This tutorial is structured using branches. For each feature we have created a branch.
-Inside each branch we have `README.md` file which contains :
+To secure springboot-app or any app and run it on https you need to generate a SSL certificate.
+There are many such service providers. But as we are developers we can start with
+self signed certificates.
 
-1. Detailed explanation of each feature.
-2. Links / References to each feature.
+You can generate self signed certificates using java keytool which comes integrated with JDK.
 
-We recommend that you practice each of the example by yourself. This will help you learn
-more. Also, in case we have done some mistake or something is needing improvement can be identified.
+Run `keytool` to verify same.
 
-Last but not least we kept each tutorial very-very simple but detailed.
 
-Below is the list of branches:
+A key could be generated in two formats:
+1. PKCS - Public key Cryptographic Standards. This is industry wide standard.
+2. JKS -  Java Keystore. This is limited to java.
 
-[Basic Caching integration](https://github.com/bp89/spring-boot-learning/tree/CACHING)
 
-[Custom Request Handling (Enum in action)](https://github.com/bp89/spring-boot-learning/tree/enum-mapping-in-controller)
+Generate the PKCS key as if you go live, it will need least changes.
 
-[Wrapping response Jackson](https://github.com/bp89/spring-boot-learning/tree/wrapping-response-json-inside-element)
+Let's run following command:
 
-[Mongo-DB integration](https://github.com/bp89/spring-boot-learning/tree/mongo-db-integration-springdata)
+keytool -genkeypair -alias sb-secure -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore sb-secure.p12 -validity 3650
+
+When you run this you will be asked for password. 
+
+Then answer few quick questions if you want to.
+
+A p12 file will be generated in the directory you ran the command.
+
+Move it to classpath i.e. resources folder in your springboot-application.
+
+In `application.properties` file do following changes:
+
+```
+ # key type. Set to JKS for Java keystore
+ server.ssl.key-store-type=PKCS12 
+ path to key
+ server.ssl.key-store=classpath:sb-secure.p12 
+ # password you enntered when key was craeted
+ server.ssl.key-store-password=sb-secure 
+ # Alias name
+ server.ssl.key-alias=sb-secure
+```
+ 
