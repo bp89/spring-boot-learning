@@ -21,3 +21,5 @@ Below is the list of branches:
 [Wrapping response Jackson](https://github.com/bp89/spring-boot-learning/tree/wrapping-response-json-inside-element)
 
 [Mongo-DB integration](https://github.com/bp89/spring-boot-learning/tree/mongo-db-integration-springdata)
+
+[springboot : securing application aka running it on https](https://github.com/bp89/spring-boot-learning/tree/securing-springboot-app_aka_https)
