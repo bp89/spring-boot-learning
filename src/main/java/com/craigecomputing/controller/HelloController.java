@@ -1,20 +1,24 @@
 package com.craigecomputing.controller;
 
-import com.craigecomputing.dtos.ProfileDto;
+import com.craigecomputing.config.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-
 public class HelloController {
+
+    @Autowired
+    AppConfig appConfig;
+
+    @Value("${com.cc.lastName}")
+    String lastName;
 
     @RequestMapping("/")
     @ResponseBody
-    public ProfileDto sayHello(){
-
-        return ProfileDto.builder()
-                .name("We need to secure ourselves!")
-                .build();
+    public String sayHello(){
+        return lastName;
     }
 }

@@ -1,25 +1,87 @@
-Spring-boot Tutorial
+##Reading from Properties file (Or yaml file)
+
+---
+###Imp Notes:-
+
+[Lombok](https://projectlombok.org/) has been used to auto-generate getters / setters, constructors etc.
+
 ---
 
-This tutorial is structured using branches. For each feature we have created a branch.
-Inside each branch we have `README.md` file which contains :
 
-1. Detailed explanation of each feature.
-2. Links / References to each feature.
+By default springboot auto loads application.properties file or application.yaml file
 
-We recommend that you practice each of the example by yourself. This will help you learn
-more. Also, in case we have done some mistake or something is needing improvement can be identified.
+Following are some commonly used ways for same:
 
-Last but not least we kept each tutorial very-very simple but detailed.
+##### You can get those by calling Environment. You can autowire the bean and call it like below:
 
-Below is the list of branches:
+`(env.getProperty("com.cc.firstName")`
 
-[Basic Caching integration](https://github.com/bp89/spring-boot-learning/tree/CACHING)
+##### Alternatively, you can map properties to a POJO bean as below:
 
-[Custom Request Handling (Enum in action)](https://github.com/bp89/spring-boot-learning/tree/enum-mapping-in-controller)
+>@ConfigurationProperties("com.cc")
 
-[Wrapping response Jackson](https://github.com/bp89/spring-boot-learning/tree/wrapping-response-json-inside-element)
+Here `com.cc` is the relative path till the second last `.` level then rest of the name should match
+the property name in pojo. For example,
 
-[Mongo-DB integration](https://github.com/bp89/spring-boot-learning/tree/mongo-db-integration-springdata)
+```java
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-[springboot : securing application aka running it on https](https://github.com/bp89/spring-boot-learning/tree/securing-springboot-app_aka_https)
+@ConfigurationProperties("com.cc")
+@Data
+public  class AppConfig{
+        private String firstName;
+        private String lastName;
+}
+```
+
+There could be times when you wanted to not only map the property name right after second `.`.
+In such cases you can nest a static inner class inside main class and specify
+the root level path and then declare a property with same class as type and name as in properties file
+
+For example,
+
+if we have following application.properties file:
+
+```java
+com.cc.firstName=Craige
+com.cc.lastName=Computing
+
+#com.cc.proprietary.ccDate=2019
+#com.cc.proprietary.registeredName=Craige Computing
+
+```
+
+then our config file will like like below:
+
+```java
+
+@Configuration
+@ConfigurationProperties("com.cc")
+@Data
+public class AppConfig {
+    private String firstName;
+    private String lastName;
+    private Proprietary proprietary;
+
+    @Data
+    public static class Proprietary {
+        private String registeredName;
+        private Integer ccDate;
+    }
+}
+
+```
+
+##### Or you can use @Value annotation to map a property. It takes full path of  a property
+
+For example, declare a bean using value as below:
+
+```java
+
+@Value("${com.cc.lastName}")
+String lastName;
+```
+
+This is a very basic but powerful and organised way to inject externaized props into a bean.
+
