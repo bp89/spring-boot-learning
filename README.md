@@ -7,7 +7,6 @@
 
 ---
 
-
 By default springboot auto loads application.properties file or application.yaml file
 
 Following are some commonly used ways for same:
@@ -47,15 +46,14 @@ if we have following application.properties file:
 com.cc.firstName=Craige
 com.cc.lastName=Computing
 
-#com.cc.proprietary.ccDate=2019
-#com.cc.proprietary.registeredName=Craige Computing
+com.cc.proprietary.ccDate=2019
+com.cc.proprietary.registeredName=Craige Computing
 
 ```
 
 then our config file will like like below:
 
 ```java
-
 @Configuration
 @ConfigurationProperties("com.cc")
 @Data
@@ -83,5 +81,5 @@ For example, declare a bean using value as below:
 String lastName;
 ```
 
-This is a very basic but powerful and organised way to inject externaized props into a bean.
+This is a very basic but powerful and organised way to inject externalized props into a bean.
 
